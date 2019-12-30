@@ -1,24 +1,38 @@
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class Main {
-    public static void main(String[] args){
+    public static void main(String[] args) throws IOException {
 
-        DataReader data = new DataReader();
+        Train train = new Train();
 
-        File folder = new File("/Users/Adriana/Desktop/AI/Spam-Detection/data/Enron-Spam/enron1/spam");
+        File folder = new File("data/Enron-Spam/enron1/ham");
         File[] listOfFiles = folder.listFiles();
+        if (listOfFiles != null) {
+            for (File file : listOfFiles) {
+                 if (file.isFile()) {
+                    Path path = Paths.get(file.getPath());
+                    train.loadWords(path);
 
-        for (File file : listOfFiles) {
-             if (file.isFile()) {
-                Path path = Paths.get(file.getPath());
-                data.loadWords(path);
-
-
+                }
             }
         }
-        data.print();
+        folder = new File("data/Enron-Spam/enron1/spam");
+        listOfFiles = folder.listFiles();
+        if (listOfFiles != null) {
+            for (File file : listOfFiles) {
+                if (file.isFile()) {
+                    Path path = Paths.get(file.getPath());
+                    train.loadWords(path);
+
+                }
+            }
+        }
+
+        train.print();
+
     }
 
 }

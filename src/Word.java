@@ -5,6 +5,7 @@ public class Word {
     private int countHam;
     private float prob;
 
+
     public Word(String word, int countSpam, int countHam, float prob) {
         this.word = word;
         this.countSpam = countSpam;
@@ -14,6 +15,7 @@ public class Word {
     public Word () {
 
     }
+
     public void increaseSpamHam(String type) {
         if(type=="ham"){
             countHam++;
@@ -21,8 +23,15 @@ public class Word {
             countSpam++;
         }
     }
-    public void calculateProbability () {
-        prob=1;
+    public void calculateProbability (float totSpam,float totHam) {
+
+        prob = ((countSpam / totSpam) * totSpam / (totHam + totSpam)) / ((countSpam / totSpam) * (totSpam / (totHam + totSpam)) + ((countHam / totHam) * (totHam / (totHam + totSpam))));
+
+        if(prob < 0.01f) {
+            prob = 0.01f;
+        } else if(prob > 0.99f) {
+            prob = 0.99f;
+        }
     }
 
     public String getWord() {
@@ -56,6 +65,8 @@ public class Word {
     public void setProb(float prob) {
         this.prob = prob;
     }
+
+
 
     @Override
     public String toString() {
