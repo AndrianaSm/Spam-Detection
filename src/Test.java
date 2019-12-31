@@ -4,29 +4,31 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class Test {
 
-    int corrects=0;
-    int filenum=0;
-    private int hamwords;
-    private int spamwords;
+    private int corrects=0;
+    private int files=0;
+    private float hamWords;
+    private float spamWords;
+    private String type;
+    private String testType;
+    private int count=0;
 
-    public Test() {
+    int correctSpam=0;
+    int correctHam=0;
 
-    }
+
+    public Test() {}
 
     public void checkWords(Path path, Train train) {
-        hamwords = 0;
-        spamwords = 0;
-
-
-        String type;
+        hamWords = 0;
+        spamWords = 0;
 
         try {
-            List<String> lines = Files.readAllLines(path); //WARN
-            System.out.println("I'm in");
-            filenum++;
+            List<String> lines = Files.readAllLines(path);
+            files++;
             if (path.toString().contains("ham")) {
                 type = "ham";
             } else {
@@ -37,32 +39,92 @@ public class Test {
                 String[] term = line.replaceAll("Subject: ", "").replaceAll("re:", "").replaceAll(":", "").replaceAll("[\u0000-\u001f]", "").split(" ");
                 for (String word : term) {
                     if (train.words.containsKey(word)){
-                        Word w = new Word();
-                        for (Map.Entry<String, Word> entry : words.entrySet()){
-                            if (entry.getKey().equals(word)){
-                                w=entry.getValue();
-                                break;
-                            }
-                        }
-                        if(w.getSprob()<w.getHprob()){
-                            hamwords++;
-                        } else {
-                            spamwords++;
-                        }
+                        Word w=words.get(word);
+                        hamWords+=w.getHamProb();
+                        spamWords+=w.getSpamProb();
+                        count++;
                     }else {
-                        spamwords ++;
+                        spamWords+=0.99f;
+                        count++;
                     }
                 }
+            }
 
+            if(spamWords>hamWords) {
+                testType="spam";
+            }else {
+                testType ="ham";
             }
-            System.out.println(spamwords + " "+hamwords);
-            if (hamwords>spamwords){
+            if (Objects.equals(type, testType)) {
                 corrects++;
-            }
+                if(testType.equals("spam")) {
+                    correctSpam++;
+                }else {
+                    correctHam++;
+                }
+
+             }
 
         } catch (IOException e) {
             System.err.println("Error reading file");
             System.out.println(path.toString());
         }
     }
+
+    public int getCorrects() {
+        return corrects;
+    }
+
+    public void setCorrects(int corrects) {
+        this.corrects = corrects;
+    }
+
+    public int getFiles() {
+        return files;
+    }
+
+    public void setFiles(int files) {
+        this.files = files;
+    }
+
+    public float getHamWords() {
+        return hamWords;
+    }
+
+    public void setHamWords(float hamWords) {
+        this.hamWords = hamWords;
+    }
+
+    public float getSpamWords() {
+        return spamWords;
+    }
+
+    public void setSpamWords(float spamWords) {
+        this.spamWords = spamWords;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getTestType() {
+        return testType;
+    }
+
+    public void setTestType(String testType) {
+        this.testType = testType;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
 }

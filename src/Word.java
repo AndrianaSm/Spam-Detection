@@ -3,20 +3,17 @@ public class Word {
     private String word;
     private int countSpam;
     private int countHam;
-    private float sprob;
-    private float hprob;
+    private float spamProb;
+    private float hamProb;
 
-
-    public Word(String word, int countSpam, int countHam, float sprob, float hprob) {
+    public Word(String word, int countSpam, int countHam, float spamProb, float hamProb) {
         this.word = word;
         this.countSpam = countSpam;
         this.countHam = countHam;
-        this.sprob = sprob;
-        this.hprob=hprob;
+        this.spamProb = spamProb;
+        this.hamProb=hamProb;
     }
-    public Word () {
-
-    }
+    public Word () { }
 
     public void increaseSpamHam(String type) {
         if(type=="ham"){
@@ -27,23 +24,23 @@ public class Word {
     }
     public void spamProb (float totSpam,float totHam) {
 
-        sprob = ((countSpam / totSpam) * totSpam / (totHam + totSpam)) / ((countSpam / totSpam) * (totSpam / (totHam + totSpam)) + ((countHam / totHam) * (totHam / (totHam + totSpam))));
+        spamProb = ((countSpam / totSpam) * totSpam / (totHam + totSpam)) / ((countSpam / totSpam) * (totSpam / (totHam + totSpam)) + ((countHam / totHam) * (totHam / (totHam + totSpam))));
 
-        if(sprob < 0.01f) {
-            sprob = 0.01f;
-        } else if(sprob > 0.99f) {
-            sprob = 0.99f;
+        if(spamProb < 0.01f) {
+            spamProb = 0.01f;
+        } else if(spamProb > 0.99f) {
+            spamProb = 0.99f;
         }
     }
 
     public void hamProb (float totSpam,float totHam) {
 
-        hprob = (countHam / totHam) * (totHam / (totHam + totSpam)) / ((countSpam / totSpam) * (totSpam / (totHam + totSpam)) + ((countHam / totHam) * (totHam / (totHam + totSpam))));
+        hamProb = (countHam / totHam) * (totHam / (totHam + totSpam)) / ((countSpam / totSpam) * (totSpam / (totHam + totSpam)) + ((countHam / totHam) * (totHam / (totHam + totSpam))));
 
-        if(hprob < 0.01f) {
-            hprob = 0.01f;
-        } else if(hprob > 0.99f) {
-            hprob = 0.99f;
+        if(hamProb < 0.01f) {
+            hamProb = 0.01f;
+        } else if(hamProb > 0.99f) {
+            hamProb = 0.99f;
         }
     }
 
@@ -51,43 +48,39 @@ public class Word {
         return word;
     }
 
-    public int getCountSpam() {
-        return countSpam;
-    }
-
-    public int getCountHam() {
-        return countHam;
-    }
-
-    public float getSprob() { return sprob;  }
-
-    public float getHprob() { return hprob;  }
-
-
     public void setWord(String word) {
         this.word = word;
+    }
+
+    public int getCountSpam() {
+        return countSpam;
     }
 
     public void setCountSpam(int countSpam) {
         this.countSpam = countSpam;
     }
 
+    public int getCountHam() {
+        return countHam;
+    }
+
     public void setCountHam(int countHam) {
         this.countHam = countHam;
     }
 
-    public void setSprob(float sprob) {  this.sprob = sprob; }
+    public float getSpamProb() {
+        return spamProb;
+    }
 
-    public void setHprob(float hprob) { this.hprob = hprob;  }
+    public void setSpamProb(float spamProb) {
+        this.spamProb = spamProb;
+    }
 
-    @Override
-    public String toString() {
-        return "Word{" +
-                "word='" + word + '\'' +
-                ", countSpam=" + countSpam +
-                ", countHam=" + countHam +
-                ", spam prob=" + sprob +
-                ", ham prob=" + hprob +
-                '}';
+    public float getHamProb() {
+        return hamProb;
+    }
+
+    public void setHamProb(float hamProb) {
+        this.hamProb = hamProb;
     }
 }

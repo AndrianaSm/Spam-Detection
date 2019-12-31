@@ -10,20 +10,28 @@ public class Main {
 
         train_call("data/Enron-Spam/enron1/ham", train);
         train_call("data/Enron-Spam/enron1/spam", train);
+        train_call("data/Enron-Spam/enron2/ham", train);
+        train_call("data/Enron-Spam/enron2/spam", train);
+        train_call("data/Enron-Spam/enron3/ham", train);
+        train_call("data/Enron-Spam/enron3/spam", train);
+        train_call("data/Enron-Spam/enron4/ham", train);
+        train_call("data/Enron-Spam/enron4/spam", train);
+        train_call("data/Enron-Spam/enron5/ham", train);
+        train_call("data/Enron-Spam/enron5/spam", train);
 
-
-        train.print();
+        System.out.println(train.getWords());
+//        train.print();
 
         Test test = new Test();
 
-        test_call("data/Enron-Spam/enron2/spam", test, train);
-        test_call("data/Enron-Spam/enron2/ham", test, train);
-        System.out.println(test.corrects + " out of " + test.filenum);
+        test_call("data/Enron-Spam/enron6/spam", test, train);
+        test_call("data/Enron-Spam/enron6/ham", test, train);
+        System.out.println(test.getCorrects() + " out of " + test.getFiles());
+        System.out.println(test.correctHam + " " +test.correctSpam);
 
     }
 
-
-    public static void train_call(String loc, Train train){
+    private static void train_call(String loc, Train train){
         File folder = new File(loc);
         File[] listOfFiles = folder.listFiles();
         if (listOfFiles != null) {
@@ -36,7 +44,8 @@ public class Main {
         }
     }
 
-    public static void test_call(String loc, Test test, Train train){
+    private static void test_call(String loc, Test test, Train train){
+
         File folder = new File(loc);
         File[] listOfFiles = folder.listFiles();
         if (listOfFiles != null) {
@@ -48,5 +57,4 @@ public class Main {
             }
         }
     }
-
 }

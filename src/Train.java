@@ -6,22 +6,23 @@ import java.util.List;
 import java.util.Map;
 
 public class Train {
-    int totalSpam=0;
-    int totalHam=0;
-    public Map<String,Word> words=new HashMap<>();
-    public Train() {
 
-    }
+    private int totalSpam=0;
+    private int totalHam=0;
+
+    public Map<String,Word> words=new HashMap<>();
+
+    Train() { }
 
     public Map<String, Word> getWords() {
         return words;
     }
 
-    public void loadWords (Path path)  {
+    void loadWords(Path path) {
         String type;
 
         try {
-            List<String> lines = Files.readAllLines(path); //WARN
+            List<String> lines = Files.readAllLines(path);
             if(path.toString().contains("ham")) {
                 type="ham";
                 totalHam++;
@@ -29,6 +30,7 @@ public class Train {
                 type = "spam";
                 totalSpam++;
             }
+
             for(String line :lines) {
                 String[] words = line.replaceAll("Subject: ", "").replaceAll("re:", "").replaceAll(":", "").replaceAll("[\u0000-\u001f]", "").split(" ");
                 for (String word : words) {
@@ -55,9 +57,8 @@ public class Train {
     }
     public void print () {
 
-        System.out.println("###############################");
         for (Map.Entry<String, Word> entry : words.entrySet()) {
-            System.out.println(entry.getValue().getWord() +" spam:" +entry.getValue().getSprob() +" ham:" +entry.getValue().getHprob()+" Count spam " + entry.getValue().getCountSpam() + " Count ham " +entry.getValue().getCountHam());
+            System.out.println(entry.getValue().getWord() +" spamPro:" +entry.getValue().getSpamProb() +" ham:" +entry.getValue().getHamProb()+" Count spam " + entry.getValue().getCountSpam() + " Count ham " +entry.getValue().getCountHam());
 
         }
         System.out.println(words.size());
