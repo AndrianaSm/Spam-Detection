@@ -3,14 +3,16 @@ public class Word {
     private String word;
     private int countSpam;
     private int countHam;
-    private float prob;
+    private float sprob;
+    private float hprob;
 
 
-    public Word(String word, int countSpam, int countHam, float prob) {
+    public Word(String word, int countSpam, int countHam, float sprob, float hprob) {
         this.word = word;
         this.countSpam = countSpam;
         this.countHam = countHam;
-        this.prob = prob;
+        this.sprob = sprob;
+        this.hprob=hprob;
     }
     public Word () {
 
@@ -23,14 +25,25 @@ public class Word {
             countSpam++;
         }
     }
-    public void calculateProbability (float totSpam,float totHam) {
+    public void spamProb (float totSpam,float totHam) {
 
-        prob = ((countSpam / totSpam) * totSpam / (totHam + totSpam)) / ((countSpam / totSpam) * (totSpam / (totHam + totSpam)) + ((countHam / totHam) * (totHam / (totHam + totSpam))));
+        sprob = ((countSpam / totSpam) * totSpam / (totHam + totSpam)) / ((countSpam / totSpam) * (totSpam / (totHam + totSpam)) + ((countHam / totHam) * (totHam / (totHam + totSpam))));
 
-        if(prob < 0.01f) {
-            prob = 0.01f;
-        } else if(prob > 0.99f) {
-            prob = 0.99f;
+        if(sprob < 0.01f) {
+            sprob = 0.01f;
+        } else if(sprob > 0.99f) {
+            sprob = 0.99f;
+        }
+    }
+
+    public void hamProb (float totSpam,float totHam) {
+
+        hprob = (countHam / totHam) * (totHam / (totHam + totSpam)) / ((countSpam / totSpam) * (totSpam / (totHam + totSpam)) + ((countHam / totHam) * (totHam / (totHam + totSpam))));
+
+        if(hprob < 0.01f) {
+            hprob = 0.01f;
+        } else if(hprob > 0.99f) {
+            hprob = 0.99f;
         }
     }
 
@@ -46,9 +59,10 @@ public class Word {
         return countHam;
     }
 
-    public float getProb() {
-        return prob;
-    }
+    public float getSprob() { return sprob;  }
+
+    public float getHprob() { return hprob;  }
+
 
     public void setWord(String word) {
         this.word = word;
@@ -62,11 +76,9 @@ public class Word {
         this.countHam = countHam;
     }
 
-    public void setProb(float prob) {
-        this.prob = prob;
-    }
+    public void setSprob(float sprob) {  this.sprob = sprob; }
 
-
+    public void setHprob(float hprob) { this.hprob = hprob;  }
 
     @Override
     public String toString() {
@@ -74,7 +86,8 @@ public class Word {
                 "word='" + word + '\'' +
                 ", countSpam=" + countSpam +
                 ", countHam=" + countHam +
-                ", prob=" + prob +
+                ", spam prob=" + sprob +
+                ", ham prob=" + hprob +
                 '}';
     }
 }

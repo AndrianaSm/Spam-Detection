@@ -8,9 +8,13 @@ import java.util.Map;
 public class Train {
     int totalSpam=0;
     int totalHam=0;
-    private Map<String,Word> words=new HashMap<>();
+    public Map<String,Word> words=new HashMap<>();
     public Train() {
 
+    }
+
+    public Map<String, Word> getWords() {
+        return words;
     }
 
     public void loadWords (Path path)  {
@@ -44,7 +48,8 @@ public class Train {
         }
 
         for (Map.Entry<String, Word> entry : words.entrySet()) {
-            entry.getValue().calculateProbability(totalSpam,totalHam);
+            entry.getValue().spamProb(totalSpam,totalHam);
+            entry.getValue().hamProb(totalSpam,totalHam);
         }
         words.remove("");
     }
@@ -52,7 +57,7 @@ public class Train {
 
         System.out.println("###############################");
         for (Map.Entry<String, Word> entry : words.entrySet()) {
-            System.out.println(entry.getValue().getWord() +" " +entry.getValue().getProb() +" Count spam " + entry.getValue().getCountSpam() + " Count ham " +entry.getValue().getCountHam());
+            System.out.println(entry.getValue().getWord() +" spam:" +entry.getValue().getSprob() +" ham:" +entry.getValue().getHprob()+" Count spam " + entry.getValue().getCountSpam() + " Count ham " +entry.getValue().getCountHam());
 
         }
         System.out.println(words.size());
