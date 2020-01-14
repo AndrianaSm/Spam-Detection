@@ -45,8 +45,8 @@ public class Train {
                 }
             }
         } catch (IOException e) {
-            System.err.println("Error reading file");
-            System.out.println(path.toString());
+//            System.err.println("Error reading file");
+//            System.out.println(path.toString());
         }
 
         for (Map.Entry<String, Word> entry : words.entrySet()) {

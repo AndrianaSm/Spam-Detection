@@ -8,75 +8,45 @@ import java.util.Objects;
 
 public class Test {
 
-    private int corrects=0;
-    private int files=0;
-    private float hamWords;
-    private float spamWords;
+    private int files = 0;
+    private float ProbOfSpam;
+    private float ProbOfHam;
     private String type;
-    private String testType;
-    private int count=0;
+    private int tn=0,tp=0,fn=0,fp=0;
 
-    int correctSpam=0;
-    int correctHam=0;
+    Test() { }
 
-
-    public Test() {}
-
-    public void checkWords(Path path, Train train) {
-        hamWords = 0;
-        spamWords = 0;
+    void checkWords(Path path, Train train) {
+        ProbOfSpam = 0;
+        ProbOfHam = 0;
 
         try {
             List<String> lines = Files.readAllLines(path);
             files++;
-            if (path.toString().contains("ham")) {
-                type = "ham";
-            } else {
-                type = "spam";
-            }
-            Map<String,Word> words=train.getWords();
+            Map<String, Word> words = train.getWords();
             for (String line : lines) {
                 String[] term = line.replaceAll("Subject: ", "").replaceAll("re:", "").replaceAll(":", "").replaceAll("[\u0000-\u001f]", "").split(" ");
                 for (String word : term) {
-                    if (train.words.containsKey(word)){
-                        Word w=words.get(word);
-                        hamWords+=w.getHamProb();
-                        spamWords+=w.getSpamProb();
-                        count++;
-                    }else {
-                        spamWords+=0.99f;
-                        count++;
+                    if (train.words.containsKey(word)) {
+                        Word w = words.get(word);
+                        ProbOfHam += w.getHamProb();
+                        ProbOfSpam += w.getSpamProb();
+                    } else {
+                        ProbOfSpam += 0.99f;
                     }
                 }
             }
 
-            if(spamWords>hamWords) {
-                testType="spam";
-            }else {
-                testType ="ham";
+            if (ProbOfSpam > ProbOfHam) {
+                type = "spam";
+            } else {
+                type = "ham";
             }
-            if (Objects.equals(type, testType)) {
-                corrects++;
-                if(testType.equals("spam")) {
-                    correctSpam++;
-                }else {
-                    correctHam++;
-                }
-
-             }
 
         } catch (IOException e) {
-            System.err.println("Error reading file");
-            System.out.println(path.toString());
+//            System.err.println("Error reading file");
+//            System.out.println(path.toString());
         }
-    }
-
-    public int getCorrects() {
-        return corrects;
-    }
-
-    public void setCorrects(int corrects) {
-        this.corrects = corrects;
     }
 
     public int getFiles() {
@@ -87,20 +57,28 @@ public class Test {
         this.files = files;
     }
 
-    public float getHamWords() {
-        return hamWords;
+    public String getTestType() {
+        return type;
     }
 
-    public void setHamWords(float hamWords) {
-        this.hamWords = hamWords;
+    public void setTestType(String testType) {
+        this.type = testType;
     }
 
-    public float getSpamWords() {
-        return spamWords;
+    public float getProbOfSpam() {
+        return ProbOfSpam;
     }
 
-    public void setSpamWords(float spamWords) {
-        this.spamWords = spamWords;
+    public void setProbOfSpam(float probOfSpam) {
+        ProbOfSpam = probOfSpam;
+    }
+
+    public float getProbOfHam() {
+        return ProbOfHam;
+    }
+
+    public void setProbOfHam(float probOfHam) {
+        ProbOfHam = probOfHam;
     }
 
     public String getType() {
@@ -111,20 +89,50 @@ public class Test {
         this.type = type;
     }
 
-    public String getTestType() {
-        return testType;
+    public int getTn() {
+        return tn;
     }
 
-    public void setTestType(String testType) {
-        this.testType = testType;
+    public void setTn(int tn) {
+        this.tn = tn;
     }
 
-    public int getCount() {
-        return count;
+    public int getTp() {
+        return tp;
     }
 
-    public void setCount(int count) {
-        this.count = count;
+    public void setTp(int tp) {
+        this.tp = tp;
     }
 
+    public int getFn() {
+        return fn;
+    }
+
+    public void setFn(int fn) {
+        this.fn = fn;
+    }
+
+    public int getFp() {
+        return fp;
+    }
+
+    public void setFp(int fp) {
+        this.fp = fp;
+    }
+
+    public void increaseTn(){
+        tn++;
+    }
+    public void increaseTp(){
+        tp++;
+    }
+    public void increaseFn(){
+        fn++;
+    }
+    public void increaseFp(){
+        fp++;
+    }
 }
+
+
